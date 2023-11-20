@@ -17,4 +17,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run tests
       run:
-        python myscript.py test
+        python manage.py test
