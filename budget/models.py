@@ -3,8 +3,8 @@ from django.utils.text import slugify
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=150)
-    slug = models.SlugField(max_length=135, unique=True, blank=True)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     budget = models.IntegerField()
 
     def save(self, *args, **kwargs):
@@ -17,15 +17,13 @@ class Project(models.Model):
         total_expense_amount = 0
 
         total_temp = 0
-        budget_temp = 100
-        expense_list_temp = [10, 11, 12, 14]
+        expense_list_temp = [10, 11, 12, 14, 11]
         for expenses in expense_list_temp:
             total_temp += expenses
         expense_amount = total_temp
-        new_budget_temp = budget_temp - expense_amount
 
         for expense in expense_list:
-            total_expense_amount += expense.amount
+            total_expense_amount += expense_amount
 
         # temporary solution, because the form currently only allows integer amounts
         total_expense_amount = int(total_expense_amount)
@@ -42,7 +40,7 @@ class Project(models.Model):
 
 class Category(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    name = models.CharField(max_length=70)
+    name = models.CharField(max_length=50)
 
 
 class Expense(models.Model):
@@ -50,7 +48,7 @@ class Expense(models.Model):
         Project, on_delete=models.CASCADE, related_name="expenses"
     )
     title = models.CharField(max_length=125)
-    amount = models.DecimalField(max_digits=12, decimal_places=3)
+    amount = models.DecimalField(max_digits=10, decimal_places=3)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
